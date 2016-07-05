@@ -51,6 +51,7 @@ module.exports = function(schema, options) {
                 if (path) {
                     // Add an async validator
                     path.validate(function(value, respond) {
+                        this[pathName] = this[pathName].split(' ').filter(el => el.length>0).join(' ');                        
                         var doc = this;
                         var isSubdocument = typeof doc.ownerDocument === 'function';
                         var isQuery = doc.constructor.name === 'Query';
@@ -70,7 +71,7 @@ module.exports = function(schema, options) {
 
                             // Wrap with case-insensitivity
                             if (path.options && path.options.uniqueCaseInsensitive) {
-                                pathValue = new RegExp('^' + pathValue + '$', 'i');
+                                pathValue = new RegExp(pathValue.replace(/[-[\]{}()*+?.,\\^$|#]/g, "\\$&"));
                             }
 
                             var condition = {};
