@@ -51,6 +51,7 @@ module.exports = function(schema, options) {
                 if (path) {
                     // Add an async validator
                     path.validate(function(value, respond) {
+                        if(typeof this[pathName] == "string")
                         this[pathName] = this[pathName].split(' ').filter(el => el.length>0).join(' ');                        
                         var doc = this;
                         var isSubdocument = typeof doc.ownerDocument === 'function';
