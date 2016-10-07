@@ -62,7 +62,6 @@ module.exports = function(schema, options) {
                         var conditions = [];
                         paths.forEach(function(name) {
                             var pathValue;
-
                             // If the doc is a query, this is a findAndUpdate
                             if (isQuery) {
                                 pathValue = get(doc, '_update.' + name);
@@ -105,8 +104,11 @@ module.exports = function(schema, options) {
                         } else if (typeof doc.model === 'function') {
                             model = doc.model(doc.constructor.modelName);
                         }
-
-                        model.where({ $and: conditions }).count(function(err, count) {
+                        model.where({ $and: conditions }).exec(function(err, docs) {
+                            var count = 0;
+                            var pathValues = {};
+                            conditions.map(_el => pathValues[Object.keys(_el)[0]] = _el[Object.keys(_el)[0]]);
+                            docs.forEach(el => paths.forEach(name => count = el[name].toUpperCase() == pathValues[name].source.toUpperCase()?count+1:count));
                             respond(count === 0);
                         });
                     }, pathMessage);
