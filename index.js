@@ -107,7 +107,7 @@ module.exports = function(schema, options) {
                         model.where({ $and: conditions }).exec(function(err, docs) {
                             var count = 0;
                             var pathValues = {};
-                            conditions.map(_el => pathValues[Object.keys(_el)[0]] = _el[Object.keys(_el)[0]].source?_el[Object.keys(_el)[0]].source:_el[Object.keys(_el)[0]]);
+                            conditions.map(_el => _el[Object.keys(_el)[0]]?pathValues[Object.keys(_el)[0]] = _el[Object.keys(_el)[0]].source?_el[Object.keys(_el)[0]].source:_el[Object.keys(_el)[0]]:null);
                             docs.forEach(el => paths.forEach(name => count = el[name].toUpperCase() == pathValues[name].toUpperCase()?count+1:count));
                             respond(count === 0);
                         });
