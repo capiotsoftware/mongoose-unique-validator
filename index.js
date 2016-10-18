@@ -108,7 +108,7 @@ module.exports = function(schema, options) {
                             var count = 0;
                             var pathValues = {};
                             conditions.map(_el => _el[Object.keys(_el)[0]]?pathValues[Object.keys(_el)[0]] = _el[Object.keys(_el)[0]].source?_el[Object.keys(_el)[0]].source:_el[Object.keys(_el)[0]]:null);
-                            docs.forEach(el => paths.forEach(name => count = el[name].toUpperCase() == pathValues[name].toUpperCase()?count+1:count));
+                            docs.forEach(el => paths.forEach(name => count = el[name]?(el[name]?(el[name].toUpperCase() == pathValues[name].toUpperCase()?count+1:count):count):count));
                             respond(count === 0);
                         });
                     }, pathMessage);
